@@ -12,7 +12,7 @@ const request = (method, path, protocol, headers, body, header) => {
         headers,
         body,
         getHeader: (header) => {
-            const lowercased = headers.map(name => name.toUpperCase());
+            const lowercased = headers.map(name => name.toLowerCase());
             return lowercased[header.split(':')[0]]
         }
     }
@@ -84,6 +84,9 @@ const createServer = (requestHandler) => {
                 console.log("Listening to port: " + portNumber);
             });
         },
+        close:()=>{
+            server.close();
+        }
 
     };
 };
