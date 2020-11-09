@@ -4,14 +4,14 @@ const objectsToLines = (obj) => {
     return Object.entries(obj).map(pair => `${pair[0]}:${pair[1]}`).join('\r\n');
 }
 
-const request = (method, path, protocol, headers, body,header) => {
+const request = (method, path, protocol, headers, body, header) => {
     return {
         method,
         path,
         protocol,
         headers,
         body,
-        getHeader:(header)=>{
+        getHeader: (header) => {
             const lowercased = headers.map(name => name.toUpperCase());
             return lowercased[header.split(':')[0]]
         }
@@ -23,15 +23,15 @@ const createServer = (requestHandler) => {
     let buffer = [];
     let body = [];
     let headers = [];
-    let contentLength =[];
+    let contentLength = [];
     const server = net.createServer(socket => {
         console.log("client connected");
         //function send del response
         const response = () => {
             return {
-                send:(statusCode,headers,body)=>{
-                    headers['Date']= (new Date()).toUTCString()
-                    headers['Content-Lengtth']=body.length
+                send: (statusCode, headers, body) => {
+                    headers['Date'] = (new Date()).toUTCString()
+                    headers['Content-Lengtth'] = body.length
                     socket.write(`HTTP/1.1 ${statusCode}\r\n`);
                     socket.write(`${objectsToLines(headers)}\r\n`);
                     socket.write("\r\n");
@@ -40,7 +40,6 @@ const createServer = (requestHandler) => {
                 }
             }
         }
-
 
         socket.on("data", (data) => {
 
@@ -55,7 +54,7 @@ const createServer = (requestHandler) => {
                 return
 
             //Obtener el Content Length
-            if(buffer.join().toLowerCase().match("[abc]*content-length: \\d+[abc]*")) {
+            if (buffer.join().toLowerCase().match("[abc]*content-length: \\d+[abc]*")) {
                 const contentLength = buffer.join().toLowerCase().match("[abc]*content-length: \\d+[abc]*")[0].split(" ");
             }
             const flag = (buffer.indexOf(''))
@@ -69,11 +68,8 @@ const createServer = (requestHandler) => {
             //Comprobar si hemos recogido el body completo
             if (!body.length === contentLength[1])
                 return
-
-
             //console.log(buffer.includes('')); //true all headers
-
-            requestHandler(request(method, path, protocol, headers, body,''),response())
+            requestHandler(request(method, path, protocol, headers, body, ''), response())
 
         });
         socket.on("end", () => {
