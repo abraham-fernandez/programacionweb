@@ -83,7 +83,7 @@ const createServer = (requestHandler) => {
             });
             //Comprobar si hemos recogido el body completo
             if (!body.length === contentLength[1])
-
+                return
             //console.log(buffer.includes('')); //true all headers
             requestHandler(request(method, path, protocol, headers, body, ''), response())
 
