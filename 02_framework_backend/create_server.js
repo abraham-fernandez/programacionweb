@@ -12,10 +12,26 @@ const request = (method, path, protocol, headers, body, header) => {
         headers,
         body,
         getHeader: (header) => {
-            const lowercased = headers.map(name => name.toLowerCase());
-            return lowercased[header.split(':')[0]]
+            const lowercased = Object.entries(headers).reduce((a, [key, value]) => {
+                a[key.toLowerCase()] = value;
+                return a;
+            }, {});
+
+            if(lowercased[header.toLowerCase()])
+                return lowercased[header.toLowerCase()].trim()
+            return null
+
+
         }
     }
+}
+const codeToReason=(code)=> {
+    const reasons = {
+        '200': 'OK',
+        '404': 'Not Found',
+        '500': 'Server Error'
+    }
+    return reasons[code];
 }
 
 const createServer = (requestHandler) => {
@@ -32,7 +48,7 @@ const createServer = (requestHandler) => {
                 send: (statusCode, headers, body) => {
                     headers['Date'] = (new Date()).toUTCString()
                     headers['Content-Lengtth'] = body.length
-                    socket.write(`HTTP/1.1 ${statusCode}\r\n`);
+                    socket.write(`HTTP/1.1 ${statusCode} ${codeToReason(statusCode)}\r\n`);
                     socket.write(`${objectsToLines(headers)}\r\n`);
                     socket.write("\r\n");
                     socket.write(body);
@@ -62,12 +78,12 @@ const createServer = (requestHandler) => {
             buffer.forEach((element, indice, array) => {
                 if (indice > flag)
                     body += element
-                if (indice > 1 && indice < flag)
+                if (indice > 0 && indice < flag)
                     headers[element.split(':')[0]] = element.split(':')[1];
             });
             //Comprobar si hemos recogido el body completo
             if (!body.length === contentLength[1])
-                return
+
             //console.log(buffer.includes('')); //true all headers
             requestHandler(request(method, path, protocol, headers, body, ''), response())
 
