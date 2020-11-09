@@ -71,7 +71,7 @@ const createServer = (requestHandler) => {
 
             //Obtener el Content Length
             if (buffer.join().toLowerCase().match("[abc]*content-length: \\d+[abc]*")) {
-                const contentLength = buffer.join().toLowerCase().match("[abc]*content-length: \\d+[abc]*")[0].split(" ");
+                 contentLength = buffer.join().toLowerCase().match("[abc]*content-length: \\d+[abc]*")[0].split(" ");
             }
             const flag = (buffer.indexOf(''))
             //Obtener el body de la petición
