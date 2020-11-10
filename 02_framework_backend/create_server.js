@@ -47,7 +47,7 @@ const createServer = (requestHandler) => {
             return {
                 send: (statusCode, headers, body) => {
                     headers['Date'] = (new Date()).toUTCString()
-                    headers['Content-Lengtth'] = body.length
+                    headers['Content-Length'] = body.length
                     socket.write(`HTTP/1.1 ${statusCode} ${codeToReason(statusCode)}\r\n`);
                     socket.write(`${objectsToLines(headers)}\r\n`);
                     socket.write("\r\n");
@@ -82,6 +82,7 @@ const createServer = (requestHandler) => {
                     headers[element.split(':')[0]] = element.split(':')[1];
             });
             //Comprobar si hemos recogido el body completo
+            console.log(contentLength)
             if (!body.length === contentLength[1])
                 return
             //console.log(buffer.includes('')); //true all headers
