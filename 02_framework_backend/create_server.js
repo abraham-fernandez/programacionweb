@@ -36,12 +36,13 @@ const codeToReason=(code)=> {
 
 const createServer = (requestHandler) => {
 
-    let buffer = [];
-    let body = [];
-    let headers = [];
-    let contentLength = [];
+
     const server = net.createServer(socket => {
         console.log("client connected");
+        let buffer = [];
+        let body = [];
+        let headers = [];
+        let contentLength = [];
         //function send del response
         const response = () => {
             return {
@@ -71,7 +72,8 @@ const createServer = (requestHandler) => {
 
             //Obtener el Content Length
             if (buffer.join().toLowerCase().match("[abc]*content-length: \\d+[abc]*")) {
-                 contentLength = buffer.join().toLowerCase().match("[abc]*content-length: \\d+[abc]*")[0].split(" ");
+                 contentLength = buffer.join().toLowerCase().match("[abc]*content-length: \\d+[abc]*")[0].split(": ");
+
             }
             const flag = (buffer.indexOf(''))
             //Obtener el body de la petición
@@ -81,12 +83,12 @@ const createServer = (requestHandler) => {
                 if (indice > 0 && indice < flag)
                     headers[element.split(':')[0]] = element.split(':')[1];
             });
-            //Comprobar si hemos recogido el body completo
-            console.log(contentLength)
-            if (!body.length === contentLength[1])
-                return
-            //console.log(buffer.includes('')); //true all headers
-            requestHandler(request(method, path, protocol, headers, body, ''), response())
+            //Comprobar si hemos recogido el body completo o el la peticion no trae body
+            if((parseInt(contentLength[1])===body.length) || (body.length===0)){
+                requestHandler(request(method, path, protocol, headers, body, ''), response())
+            }
+
+
 
         });
         socket.on("end", () => {
