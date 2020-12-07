@@ -71,7 +71,7 @@
         }
         //obtener valores nodos con fw-attr
         const getAttr = (att) => {
-            var element=  document.querySelector('[fw-attr="'+att+'"]')
+            var element=  document.querySelector('[fw-attr\\:value='+att+']')
             return element;
         }
 
@@ -101,6 +101,7 @@
             }
         }
         getChildNodes(root)
+        getAttr('username')
     }
 </script>
 
