@@ -8,8 +8,7 @@
 </head>
 <body>
 <div id="root">
-    <p fw-for="list"></p>
-    <a fw-for="list"></a>
+
     <div fw-if="isPageLogIn">
         <form fw-on:submit="submitLogIn">
             <h1>Log in</h1>
@@ -87,13 +86,13 @@
         *
         */
         const getAttr = (att) => {
-            var element = document.querySelector('[fw-attr\\:value=' + att + ']')
+            let element = document.querySelector('[fw-attr\\:value=' + att + ']')
             return element;
         }
 
        /**
         *
-        *  Añade eventos a todos los nodos con el atrinuto fw-on
+        *  Añade eventos a todos los nodos con el atributo fw-on
         *
         */
         const addHanlder = (node) => {
@@ -114,7 +113,7 @@
         *
         */
         const getChildNodes = (node,) => {
-            for (var i = 0; i < node.children.length; i++) {
+            for (let i = 0; i < node.children.length; i++) {
                 let child = node.children[i];
                 setHidden(child)
                 setContent(child)
@@ -127,17 +126,19 @@
        /**
         * Obtiene todos los elementos con atributo fw-for y recorre el array
         * dado añadiendo los elementos del array dentro del elemento html dado
+        *  initialState:{list=['elemento1','elemento2']}
+        *  <p fw-for="list"></p>  -->    <p fw-for="list">elemento1</p>    <p>elemento2</p>
         *
         */
         const fwFor = () => {
 
-            var elements = document.querySelectorAll('[fw-for]');
+            let elements = document.querySelectorAll('[fw-for]');
 
             elements.forEach((element, index, array) => {
-                var content = element.getAttribute('fw-for')
-                var array = initialState[content]
+                let content = element.getAttribute('fw-for')
+                let list = initialState[content]
 
-                array.forEach((it, indice, arr) => {
+                list.forEach((it, indice, arr) => {
                     if (indice === 0) {
                         element.textContent = it
                     } else {
@@ -153,6 +154,7 @@
         getChildNodes(root)
         getAttr('username')
         fwFor()
+
 
     }
 </script>
