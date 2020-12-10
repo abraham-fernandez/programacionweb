@@ -55,11 +55,11 @@
         //listado de eventos
         let eventList = ['change', 'submit']
 
-       /**
-        *
-        *  Establece el atributo hidden en función del valor establecido en el atriuto fw-if
-        *
-        */
+        /**
+         *
+         *  Establece el atributo hidden en función del valor establecido en el atriuto fw-if
+         *
+         */
         const setHidden = (node) => {
             if (node.hasAttribute('fw-if'))
                 if (currentState[node.getAttribute('fw-if')] === false) {
@@ -69,32 +69,34 @@
                 }
         }
 
-       /**
-        *
-        * Cambia el contenido de los elementos html con el atributo fw-content
-        *
-        */
+        /**
+         *
+         * Cambia el contenido de los elementos html con el atributo fw-content
+         *
+         */
         const setContent = (node) => {
             let att = node.getAttribute('fw-content');
             if (att)
                 document.querySelector('[fw-content="' + att + '"]').innerHTML = currentState[att];
         }
 
-       /**
-        *
-        *  Obtiene todos los nodos con el atributo fw-attr
-        *
-        */
-        const getAttr = (att) => {
-            let element = document.querySelector('[fw-attr\\:value=' + att + ']')
-            return element;
+        /**
+         *
+         *  Cambiar los atributos del elemento dato a través de fw-attr
+         *
+         */
+        const setAttr = (node) => {
+            for (let x = 0; x < node.attributes.length; x++) {
+                if (node.attributes[x].name.includes('fw-attr'))
+                    node.setAttribute(node.attributes[x].name.substr(8), currentState[node.attributes[x].value]);
+            }
         }
 
-       /**
-        *
-        *  Añade eventos a todos los nodos con el atributo fw-on
-        *
-        */
+        /**
+         *
+         *  Añade eventos a todos los nodos con el atributo fw-on
+         *
+         */
         const addHanlder = (node) => {
             eventList.forEach((element, indice, array) => {
                 let att = node.getAttribute('fw-on:' + element)
@@ -107,29 +109,30 @@
             });
         }
 
-       /**
-        *
-        *  Obtener y recorrer todos los nodos hijos del elemento root
-        *
-        */
+        /**
+         *
+         *  Obtener y recorrer todos los nodos hijos del elemento root
+         *
+         */
         const getChildNodes = (node,) => {
             for (let i = 0; i < node.children.length; i++) {
                 let child = node.children[i];
                 setHidden(child)
                 setContent(child)
                 addHanlder(child)
+                setAttr(child)
                 if (child.hasChildNodes()) {
                     getChildNodes(child)
                 }
             }
         }
-       /**
-        * Obtiene todos los elementos con atributo fw-for y recorre el array
-        * dado añadiendo los elementos del array dentro del elemento html dado
-        *  initialState:{list=['elemento1','elemento2']}
-        *  <p fw-for="list"></p>  -->    <p fw-for="list">elemento1</p>    <p>elemento2</p>
-        *
-        */
+        /**
+         * Obtiene todos los elementos con atributo fw-for y recorre el array
+         * dado añadiendo los elementos del array dentro del elemento html dado
+         *  initialState:{list=['elemento1','elemento2']}
+         *  <p fw-for="list"></p>  -->    <p fw-for="list">elemento1</p>    <p>elemento2</p>
+         *
+         */
         const fwFor = () => {
 
             let elements = document.querySelectorAll('[fw-for]');
@@ -152,7 +155,7 @@
         }
 
         getChildNodes(root)
-        getAttr('username')
+
         fwFor()
 
 
