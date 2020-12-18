@@ -22,7 +22,7 @@
             />
             <input
                     type="password"
-                    name="password"
+                    name="password" ,
                     fw-attr:value="password"
                     fw-on:change="changePassword"
                     placeholder="Password"
@@ -98,15 +98,19 @@
          *
          */
         const addHanlder = (node) => {
-            eventList.forEach((element, indice, array) => {
-                let att = node.getAttribute('fw-on:' + element)
-
-                if (att)
-                    node.addEventListener(att.substr(0, 6), function (event) {
-                        currentState = handlers[att](currentState, event)
+            let evt = "";
+            let param = "";
+            for (let x = 0; x < node.attributes.length; x++) {
+                if (node.attributes[x].name.includes('fw-on:')) {
+                    evt = node.attributes[x].name.substr(6)
+                    param = node.attributes[x].value;
+                    node.addEventListener(evt,function (event) {
+                        currentState = handlers[param](currentState, event)
                         getChildNodes(root)
                     });
-            });
+                }
+            }
+
         }
 
         /**
@@ -114,7 +118,7 @@
          *  Obtener y recorrer todos los nodos hijos del elemento root
          *
          */
-        const getChildNodes = (node,) => {
+        const getChildNodes = (node) => {
             for (let i = 0; i < node.children.length; i++) {
                 let child = node.children[i];
                 setHidden(child)
@@ -139,7 +143,7 @@
 
             elements.forEach((element, index, array) => {
                 let content = element.getAttribute('fw-for')
-                let list = initialState[content]
+                let list = currentState[content]
 
                 list.forEach((it, indice, arr) => {
                     if (indice === 0) {
