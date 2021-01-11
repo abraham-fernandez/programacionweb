@@ -1,13 +1,25 @@
 const createServer = require("./create_server.js");
+const fs = require('fs')
 
 const get = (request, response) => {
   // ...📝
 
-  response.send(
-    "200"
-    // ...,
-    // ...
-  );
+switch (request.path) {
+  case "/":
+    response.send(
+        "200",
+        {"Content-Type": "text/html",
+          "Access-Control-Allow-Origin": "*"},
+        fs.readFileSync('./index.html')
+    );
+    break;
+  default:
+    response.send(
+        "200",
+        {"Access-Control-Allow-Origin": "*"},
+        fs.readFileSync('.'+request.path)
+    );
+}
 };
 
 const post = (request, response) => {

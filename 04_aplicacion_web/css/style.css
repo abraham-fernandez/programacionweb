@@ -1,0 +1,65 @@
+.container {
+    display: flex;
+    position: fixed;
+    top: 35%;
+    left: 50%;
+    margin-top: -100px;
+    margin-left: -120px;
+
+}
+.logo{
+    background-image: url("../img/Tetris_logo.png");
+    background-size: cover;
+    background-repeat:no-repeat;
+    background-position: center;
+    height: 200px;
+    width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+
+}
+
+.fondo{
+    padding:20px;
+    width: 200px;
+    height: 400px;
+    background-image: url("../img/fondo.jpg");
+    background-size: cover;
+    background-repeat:no-repeat;
+}
+.grid {
+    width: 200px;
+    height: 400px;
+    display: flex;
+    flex-wrap: wrap;
+    background-color: #333;
+}
+
+.grid div {
+    height: 20px;
+    width: 20px;
+    box-shadow: inset 1px 1px #a8a8a8 ;
+}
+
+.tetromino {
+    background-color: blue;
+}
+
+
+.mini-grid {
+    margin-left: 50px;
+    width: 80px;
+    height: 80px;
+    display: flex;
+    flex-wrap: wrap;
+    background-color: yellow;
+    display: flex;
+}
+
+.mini-grid div {
+    height: 20px;
+    width: 20px;
+}
+.score{
+    margin-left:60px;
+}
