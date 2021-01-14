@@ -77,3 +77,8 @@
     margin-left:60px;
     font-family: 'Acme', sans-serif;
 }
+#score{
+    text-align: center;
+    font-size: 30px;
+    margin-top:-5px;
+}
